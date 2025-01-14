@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScriptの文法とデータ型のポイント</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>JavaScriptの文法とデータ型のポイント</h1>
+    </header>
+
+    <main>
+        <section class="section">
+            <h2>基本</h2>
+            <ul>
+                <li>JavaScriptはUnicode文字セットを使用する</li>
+                <li>大文字と小文字を区別する</li>
+                <li>命令は文 (statement) と呼ばれ、セミコロン (;) によって区切られる</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>コメント</h2>
+            <ul>
+                <li>コメントはホワイトスペースのように扱われ、スクリプトの実行から除外される</li>
+                <li><strong>行コメント</strong> <code>// 一行のコメントは先頭に記号を付ける</code></li>
+                <li><strong>ブロックコメント</strong>
+                    <pre><code>/*
+                        複数行からなる
+                        コメントを囲む
+                    */</code></pre>
+                </li>
+                <li><strong>ハッシュバンコメント</strong> <code>#! /usr/bin/env node</code></li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>宣言</h2>
+            <ul>
+                <li>変数を宣言する方法は3種類: <code>var</code>, <code>let</code>, <code>const</code></li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>変数</h2>
+            <ul>
+                <li>変数はデータを格納し参照するための識別子</li>
+                <li>文字、アンダースコア (_)、ドル記号 ($) から始まる。続く文字には数字 (0–9) も使用できる</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>変数の宣言</h2>
+            <ul>
+                <li>変数は使用する前に常に宣言する</li>
+                <li>宣言方法は <code>var</code>（ローカル変数・グローバル変数の両方）と <code>let</code>／<code>const</code>（ブロックスコープのローカル変数）</li>
+            </ul>
+
+            <h3>例: 変数の宣言と初期化</h3>
+            <pre><code>
+const foo = {
+    bar1: 'sample001',
+    bar2: 'sample002',
+};
+// fooからbarプロパティを抽出
+const { bar1 } = foo;
+// 抽出したbarプロパティの値をコンソールに出力
+console.log(bar1);
+            </code></pre>
+        </section>
+
+        <section class="section">
+            <h2>データ型</h2>
+            <ul>
+                <li>JavaScriptには以下のデータ型がある</li>
+                <li><strong>プリミティブ型</strong>（Boolean, null, undefined, Number, BigInt, String, Symbol）</li>
+                <li><strong>オブジェクト型</strong>（Object）</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>データ型の変換</h2>
+            <p>変数宣言時にデータ型を指定する必要がなく、スクリプト実行時に必要に応じてデータ型が自動的に変換される。</p>
+        </section>
+
+        <section class="section">
+            <h3>数値と '+' 演算子</h3>
+            <pre><code>
+const x = "答えは " + 1 + 2;
+console.log(x); // "答えは 12"
+const y = 1 + 2;
+console.log(y); // 3
+            </code></pre>
+        </section>
+
+        <section class="section">
+            <h2>リテラル</h2>
+            <ul>
+                <li>配列リテラル</li>
+                <li>論理値リテラル</li>
+                <li>数値リテラル</li>
+                <li>浮動小数点リテラル</li>
+                <li>オブジェクトリテラル</li>
+                <li>正規表現リテラル</li>
+                <li>文字列リテラル</li>
+            </ul>
+
+            <h3>注意点</h3>
+            <p>オブジェクトはプロトタイプのプロパティを持っている。プロトタイプを理解するには少し先の内容です。</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 JavaScript 学習サイト</p>
+    </footer>
+</body>
+
+</html>

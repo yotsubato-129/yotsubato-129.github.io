@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文法とデータ型 | JavaScript学習の記録</title>
+    <title>文法とデータ型｜JavaScript学習の記録</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 
@@ -13,8 +13,8 @@
     <header>
         <nav>
             <ul>
-                <li><a href="../#learning">学んだ内容</a></li>
-                <li><a href="../#projects">制作物</a></li>
+                <li><a href="#learning">学んだ内容</a></li>
+                <li><a href="#projects">制作物</a></li>
             </ul>
         </nav>
     </header>
@@ -22,61 +22,150 @@
     <!-- ヒーローセクション -->
     <section id="hero">
         <h1>文法とデータ型</h1>
-        <p>JavaScriptの基本文法とデータ型について学んだ内容を詳細にまとめています。</p>
+        <p>文法とデータ型についてまとめたページです。</p>
     </section>
 
-    <!-- 学習内容 -->
-    <section id="learning">
+    <section>
         <h2>基本</h2>
         <ul>
-            <li>JavaScriptはUnicode 文字セットを使用する</li>
+            <li>JavaScriptはUnicode文字セットを使用する</li>
             <li>大文字と小文字を区別する</li>
             <li>命令は文 (statement) と呼ばれ、セミコロン (;) によって区切られる</li>
         </ul>
-
-        <h2>コメント</h2>
-        <p>コメントはスクリプトの実行から除外され、ホワイトスペースのように扱われます。</p>
-        <h3>行コメント</h3>
-        <pre><code>// 一行のコメントは先頭に記号を付ける</code></pre>
-        <h3>ブロックコメント</h3>
-        <pre><code>/*
-複数行からなる
-コメントを囲む
-*/</code></pre>
-        <p>ブロックコメントの注意点は、入れ子のコメントができずSyntaxErrorとなる点です。</p>
-
-        <h2>変数と宣言</h2>
-        <p>変数はデータを格納し参照するための識別子で、文字、アンダースコア (_)、ドル記号 ($) から始めます。</p>
-        <h3>変数宣言の方法</h3>
-        <ul>
-            <li><strong>var</strong>：ローカル変数とグローバル変数の両方に使用</li>
-            <li><strong>let</strong>：ブロックスコープのローカル変数に使用</li>
-            <li><strong>const</strong>：ブロックスコープで読み取り専用の定数を宣言</li>
-        </ul>
-
-        <h2>データ型</h2>
-        <p>JavaScriptには以下のデータ型が存在します。</p>
-        <ul>
-            <li><strong>Boolean</strong>（論理値）：true または false</li>
-            <li><strong>null</strong>：null 値を意味する特殊なキーワード</li>
-            <li><strong>undefined</strong>：未定義の最上位プロパティ</li>
-            <li><strong>Number</strong>：整数または浮動小数点数</li>
-            <li><strong>BigInt</strong>：精度が自由な整数値</li>
-            <li><strong>String</strong>（文字列）：テキストの値を表す連続した文字</li>
-            <li><strong>Symbol</strong>：インスタンスが固有で不変となるデータ型</li>
-            <li><strong>Object</strong>：データとそのデータをやり取りする命令を持つデータ構造</li>
-        </ul>
-
-        <h2>データ型の変換</h2>
-        <p>JavaScriptではデータ型の自動変換が行われます。例えば、数値と文字列を + 演算子で結合すると、数値が文字列に変換されます。</p>
-        <pre><code>const x = "答えは " + 1 + 2;
-console.log(x); // "答えは 12"</code></pre>
-        <p>文字列から数値への変換も自動で行われる場合があります。</p>
-
-        <h2>その他の重要な概念</h2>
-        <p>変数の巻き上げ（hoisting）、グローバル変数、定数の宣言と初期化についても学びました。</p>
     </section>
 
+    <section>
+        <h2>コメント</h2>
+        <ul>
+            <li>コメントはホワイトスペースのように扱われ、スクリプトの実行から除外される</li>
+            <li>行コメント
+                <pre>// 一行のコメントは先頭に記号を付ける</pre>
+            </li>
+            <li>ブロックコメント
+                <pre>/* 複数行からなる コメントを囲む */</pre>
+            </li>
+            <li>ハッシュバンコメント
+                <pre>#! /usr/bin/env node</pre>
+                で始まることと、スクリプトやモジュールの絶対的な開始位置でのみ有効であることを除いて、単一の行のみ (//) のコメントと全く同じように動作する。スクリプトの実行に使用したい特定の
+                JavaScript エンジンへのパスを指定するのに使用される特殊なコメント。
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>宣言</h2>
+        <ul>
+            <li>変数を宣言する方は3種類
+                <ul>
+                    <li>var：変数を宣言し、ある値に初期化することもできる。</li>
+                    <li>let：ブロックスコープのローカル変数を宣言し、ある値に初期化することもできる。</li>
+                    <li>const：ブロックスコープで読み取り専用の名前付き定数を宣言する。</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>変数</h2>
+        <ul>
+            <li>変数はデータを格納し参照するための識別子</li>
+            <li>文字、アンダースコア (_)、あるいはドル記号 ($) から始まる。続く文字には数字 (0–9) も使用できる</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>変数の宣言</h2>
+        <ul>
+            <li>変数は使用する前に常に宣言する</li>
+            <li>変数を宣言する方法は2通り
+                <ul>
+                    <li>var：ローカル変数とグローバル変数の両方の宣言に使用できる</li>
+                    <li>const / let：ブロックスコープのローカル変数を宣言することができる</li>
+                </ul>
+            </li>
+            <li>複数の変数を宣言することもできる
+                <pre>const foo = { bar1: 'sample001', bar2: 'sample002' };</pre>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>宣言と初期化</h2>
+        <p>let x = 42 では、let x の部分が宣言、= 42 の部分は初期化子と呼ばれる</p>
+        <p>var と let の宣言では、初期化子はオプション。もし変数が初期化子なしで宣言された場合、その変数には undefined という値が代入される。</p>
+        <p>const の宣言では常に初期化子が必要</p>
+    </section>
+
+    <section>
+        <h2>変数のスコープ</h2>
+        <ul>
+            <li>変数は以下のスコープのいずれかに所属する
+                <ul>
+                    <li>グローバルスコープ：スクリプトモードで実行するすべてのコードの既定のスコープ。</li>
+                    <li>モジュールスコープ：モジュールモードで実行されるコードのスコープです。</li>
+                    <li>関数スコープ：関数で作成されるスコープです。</li>
+                    <li>ブロックスコープ: 波括弧の組で生成されるスコープ（let または const）</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>変数の巻き上げ</h2>
+        <p>変数の宣言がそのスコープの先頭に移動するように見えるプロセスを指す。</p>
+        <pre>console.log(x); // ReferenceError
+const x = 3;</pre>
+    </section>
+
+    <section>
+        <h2>グローバル変数</h2>
+        <p>グローバルオブジェクトのプロパティ。ウェブページでのグローバルオブジェクトは window です。</p>
+        <pre>window.変数名 (例：window.console)</pre>
+    </section>
+
+    <section>
+        <h2>定数</h2>
+        <ul>
+            <li>定数の値は宣言時に設定され、その後再代入ができない</li>
+            <li>constを使う</li>
+            <li>同一スコープ内で関数や変数と同じ名前の定数を宣言はできない</li>
+            <li>定数がオブジェクトの場合、プロパティを追加・更新・削除ができる</li>
+        </ul>
+        <pre>const MY_ARRAY = ["aaa", "bbb"];
+MY_ARRAY.push("ccc");
+console.log(MY_ARRAY); // ['aaa', 'bbb', 'ccc'];</pre>
+    </section>
+
+    <section>
+        <h2>データ構造とデータ型</h2>
+        <p>データ型の定義は8つ
+        <ul>
+            <li>Boolean（論理値）：true または false</li>
+            <li>null：null 値を意味する特殊なキーワード</li>
+            <li>undefined（未定義）：値が未定義の最上位プロパティ</li>
+            <li>Number（数値）：整数または浮動小数点数</li>
+            <li>BigInt（長整数）：精度が自由な整数値</li>
+            <li>String（文字列）：テキストの値を表す連続した文字</li>
+            <li>Symbol（シンボル）：インスタンスが固有で不変となるデータ型</li>
+            <li>Object（オブジェクト）：データとそのデータをやり取りするための命令が入ったデータ構造</li>
+        </ul>
+        </p>
+    </section>
+
+    <section>
+        <h2>データ型の変換</h2>
+        <ul>
+            <li>変数宣言時にデータ型を指定する必要がない</li>
+            <li>スクリプト実行時に必要に応じてデータ型が自動的に変換される</li>
+        </ul>
+        <pre>const x = "答えは " + 1 + 2;
+console.log(x); // "答えは 12"
+const y = 1 + 2;
+console.log(y); // "3"</pre>
+    </section>
+    </section>
+
+    <!-- フッター -->
     <footer>
         <p>&copy; 2025 JavaScript学習の記録</p>
     </footer>

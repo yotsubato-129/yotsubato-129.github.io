@@ -1,0 +1,80 @@
+/* 基本的なスタイル */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* ヘッダー */
+header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+h1 {
+    margin: 0;
+}
+
+/* メインコンテンツ */
+main {
+    padding: 2rem;
+}
+
+/* セクション */
+.section {
+    background-color: white;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* タイトル */
+h2 {
+    font-size: 1.6rem;
+    color: #4CAF50;
+}
+
+h3 {
+    font-size: 1.4rem;
+    color: #555;
+}
+
+/* リスト */
+ul {
+    list-style-type: disc;
+    margin-left: 2rem;
+}
+
+ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* コード */
+code {
+    font-family: 'Courier New', monospace;
+    background-color: #f4f4f4;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+pre code {
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+/* フッター */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

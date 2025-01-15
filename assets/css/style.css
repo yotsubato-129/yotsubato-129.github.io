@@ -1,80 +1,100 @@
-/* 基本的なスタイル */
-body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
+/* ナビゲーションバーのスタイル */
+header nav {
+    background-color: black;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+header nav ul {
+    list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-/* ヘッダー */
-header {
-    background-color: #4CAF50;
+header nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+/* ヒーローセクション */
+#hero {
+    background-color: black;
     color: white;
     text-align: center;
-    padding: 1rem;
+    padding: 50px 20px;
 }
 
-h1 {
-    margin: 0;
+#hero h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
 }
 
-/* メインコンテンツ */
-main {
-    padding: 2rem;
+#hero p {
+    font-size: 1.5em;
 }
 
-/* セクション */
-.section {
-    background-color: white;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* セクションのスタイル */
+section {
+    padding: 40px 20px;
 }
 
-/* タイトル */
 h2 {
-    font-size: 1.6rem;
-    color: #4CAF50;
+    font-size: 2.5em;
+    margin-bottom: 20px;
 }
 
 h3 {
-    font-size: 1.4rem;
-    color: #555;
+    font-size: 2em;
+    margin-top: 20px;
 }
 
-/* リスト */
+h4 {
+    font-size: 1.8em;
+    margin-top: 10px;
+}
+
+/* リストのスタイル */
 ul {
     list-style-type: disc;
-    margin-left: 2rem;
+    padding-left: 20px;
 }
 
-ul li {
-    margin-bottom: 0.5rem;
-}
-
-/* コード */
-code {
-    font-family: 'Courier New', monospace;
+pre {
     background-color: #f4f4f4;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1em;
+    overflow-x: auto;
 }
 
-pre code {
-    font-size: 1rem;
-    white-space: pre-wrap;
+/* カードレイアウト */
+.card {
+    background-color: #f4f4f4;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    font-size: 2em;
+}
+
+.card p {
+    font-size: 1.2em;
 }
 
 /* フッター */
 footer {
-    background-color: #333;
+    background-color: black;
     color: white;
     text-align: center;
-    padding: 1rem;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    padding: 20px;
 }

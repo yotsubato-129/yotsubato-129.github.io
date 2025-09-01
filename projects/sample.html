@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>カルーセル超入門：Slick.js / Swiper.js / 素のJS</title>
+    <!-- 説明: GitHub Pages へそのまま置ける1ファイル版。必要なら styles.css に分割可能 -->
+
+    <!-- 外部CSS（必要なら削除可） -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
+    <!-- Slick/Swiper のCSSは各デモのところで読み込みます -->
+
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --card: #131a22;
+            --ink: #eaf2ff;
+            --muted: #9eb0c8;
+            --accent: #6aa6ff;
+            --ok: #6ee7b7;
+            --warn: #f59e0b;
+            --bad: #fb7185;
+            --radius: 16px;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+            color: var(--ink);
+            background: radial-gradient(80% 60% at 50% 0%, #152032 0%, var(--bg) 45% 100%);
+            line-height: 1.7;
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 20px 80px;
+        }
+
+        header {
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            font-size: clamp(24px, 3.6vw, 42px);
+            margin: 0 0 8px;
+            letter-spacing: .02em;
+        }
+
+        header p {
+            color: var(--muted);
+            margin: 0 0 12px;
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #1b2430;
+            color: var(--muted);
+            border: 1px solid #2a3648;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 880px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: linear-gradient(180deg, #122033 0%, #0e1622 30%, #0c121b 100%);
+            border: 1px solid #162236;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+        }
+
+        .card h2,
+        .card h3 {
+            margin: 0 0 12px;
+        }
+
+        .card .body {
+            padding: 20px;
+        }
+
+        code,
+        pre {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        pre {
+            background: #0d1420;
+            border: 1px solid #162236;
+            padding: 14px;
+            border-radius: 12px;
+            overflow: auto;
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 14px 0;
+        }
+
+        .kpi {
+            background: #0e1723;
+            border: 1px solid #17263b;
+            padding: 10px 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .kpi .t {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .kpi .v {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .demo {
+            padding: 8px 20px 20px;
+            border-top: 1px dashed #22314a;
+        }
+
+        .demo h4 {
+            margin: 12px 0 8px;
+        }
+
+        .tip {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* 汎用スライドの見た目（Slick/Swiper/自作 共通で使用） */
+        .slide-visual {
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: clamp(18px, 3vw, 28px);
+            color: #0b1220;
+        }
+
+        .slide-visual img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        /* 自作スライダー（学習用） */
+        .plain-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 14px;
+            border: 1px solid #1a2941;
+            background: #0c1522;
+        }
+
+        .plain-track {
+            display: flex;
+            transition: transform .5s ease;
+        }
+
+        .plain-slide {
+            min-width: 100%;
+            aspect-ratio: 16/9;
+            padding: 10px;
+        }
+
+        .plain-nav {
+            position: absolute;
+            inset: auto 12px 12px auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .plain-btn {
+            background: #101a2a;
+            color: #cfe3ff;
+            border: 1px solid #21324f;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* セクション装飾 */
+        section {
+            margin-top: 24px;
+        }
+
+        .callout {
+            background: #0e1726;
+            border: 1px solid #203151;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .ok {
+            color: var(--ok);
+        }
+
+        .warn {
+            color: var(--warn);
+        }
+
+        .bad {
+            color: var(--bad);
+        }
+
+        footer {
+            margin-top: 40px;
+            color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <header>
+            <h1>カルーセル（スライダー）学習レポート<br><span style="font-size: .65em; color: var(--muted); font-weight:600">Slick.js /
+                    Swiper.js / 素のJavaScript で仕組みと実装を理解する</span></h1>
+            <p>このページは GitHub Pages にそのまま置けるテンプレートです。下のコードはコピペで動作します。CSS分割派の方は <code>styles.css</code> に移してOK。</p>
+            <div class="badges">
+                <span class="badge">jQuery: 任意（Slickで使用）</span>
+                <span class="badge">モバイル最適化: Swiper ◎</span>
+                <span class="badge">A11y: キーボード操作/roleを活用</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <!-- 左カラム: 説明 -->
+            <article class="card">
+                <div class="body">
+                    <h2>基礎：スライダーの仕組み</h2>
+                    <ol>
+                        <li>スライドを <strong>横並び</strong> にする（flex）</li>
+                        <li>表示領域で <strong>切り取る</strong>（overflow hidden）</li>
+                        <li>帯（track）を <strong>横に移動</strong>（transform でアニメ）</li>
+                        <li>無限ループ＝前後に <strong>コピー</strong> を足して循環</li>
+                    </ol>
+
+                    <div class="kpis">
+                        <div class="kpi">
+                            <div class="t">古典×jQuery</div>
+                            <div class="v">Slick</div>
+                        </div>
+                        <div class="kpi">
+                            <div class="t">モダン×GPU</div>
+                            <div class="v">Swiper</div>
+                        </div>
+                        <div class="kpi">
+                            <div class="t">理解強化</div>
+                            <div class="v">素のJS</div>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <strong>使い分けの指針</strong>
+                        <ul>
+                            <li><span class="ok">新規・SP重視・演出豊富</span> → <strong>Swiper</strong> が第一候補</li>
+                            <li><span class="warn">既存がjQuery中心</span> → 手早く <strong>Slick</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 右カラム: 目次 -->
+            <aside class="card">
+                <div class="body">
+                    <h3>目次</h3>
+                    <nav>
+                        <ol>
+                            <li><a href="#plain">素のJSで最小カルーセル</a></li>
+                            <li><a href="#slick">Slick.js デモ＆要点</a></li>
+                            <li><a href="#swiper">Swiper.js デモ＆要点</a></li>
+                            <li><a href="#compare">比較とハマりポイント</a></li>
+                        </ol>
+                    </nav>
+                </div>
+            </aside>
+        </div>
+
+        <!-- 素のJavaScriptで理解する -->
+        <section id="plain" class="card">
+            <div class="body">
+                <h2>① 素のJavaScriptで最小カルーセル（学習用）</h2>
+                <p>仕組みの肝を 30 行ちょいで実装。<code>translateX</code> で帯を動かすだけ。</p>
+                <div class="plain-carousel" aria-roledescription="carousel" aria-label="Plain Carousel Demo">
+                    <div class="plain-track">
+                        <div class="plain-slide">
+                            <div class="slide-visual" style="background:linear-gradient(135deg,#b3f,#7df)">Slide 1</div>
+                        </div>
+                        <div class="plain-slide">
+                            <div class="slide-visual" style="background:linear-gradient(135deg,#7df,#7fb)">Slide 2</div>
+                        </div>
+                        <div class="plain-slide">
+                            <div class="slide-visual" style="background:linear-gradient(135deg,#7fb,#bf8)">Slide 3</div>
+                        </div>
+                    </div>
+                    <div class="plain-nav">
+                        <button class="plain-btn" data-dir="-1" aria-label="Prev">Prev</button>
+                        <button class="plain-btn" data-dir="1" aria-label="Next">Next</button>
+                    </div>
+                </div>
+                <pre><code>&lt;div class="plain-carousel"&gt;
+  &lt;div class="plain-track"&gt;
+    &lt;div class="plain-slide"&gt;...&lt;/div&gt;
+    &lt;div class="plain-slide"&gt;...&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+const track = document.querySelector('.plain-track');
+const slides = [...document.querySelectorAll('.plain-slide')];
+let i = 0;
+function go(dir){
+  i = (i + dir + slides.length) % slides.length;
+  track.style.transform = `translateX(${-100 * i}%)`;
+}
+// 初期化＆操作
+track.style.width = `${slides.length * 100}%`;
+slides.forEach(s => s.style.width = `${100 / slides.length}%`);
+document.querySelectorAll('.plain-btn').forEach(b=> b.addEventListener('click', ()=> go(+b.dataset.dir)));
+&lt;/script&gt;</code></pre>
+                <p class="tip">※ 無限ループやドラッグは省略。原理理解用の最小実装です。</p>
+            </div>
+        </section>
+
+        <!-- Slick.js デモ -->
+        <section id="slick" class="card">
+            <div class="body">
+                <h2>② Slick.js デモ（jQuery依存）</h2>
+                <p>既存 jQuery サイトに即導入できる定番。<span class="warn">CDN 読み込み順に注意</span>（jQuery → Slick）。</p>
+                <div class="demo">
+                    <!-- Slick CSS -->
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+                    <!-- jQuery & Slick JS -->
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+                    <div class="slick-basic">
+                        <div>
+                            <div class="slide-visual" style="background:#9ae6b4">Slick 1</div>
+                        </div>
+                        <div>
+                            <div class="slide-visual" style="background:#fbd38d">Slick 2</div>
+                        </div>
+                        <div>
+                            <div class="slide-visual" style="background:#90cdf4">Slick 3</div>
+                        </div>
+                    </div>
+
+                    <script>
+                        // Slick 初期化
+                        window.addEventListener('DOMContentLoaded', function () {
+                            $('.slick-basic').slick({
+                                infinite: true,
+                                autoplay: true,
+                                autoplaySpeed: 2500,
+                                dots: true,
+                                arrows: true,
+                                adaptiveHeight: true
+                            });
+                        });
+                    </script>
+
+                    <h4>よく使う設定（例）</h4>
+                    <pre><code>$('.selector').slick({
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  responsive: [
+    { breakpoint: 1024, settings: { slidesToShow: 2 } },
+    { breakpoint: 600,  settings: { slidesToShow: 1 } }
+  ]
+});</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Swiper.js デモ -->
+        <section id="swiper" class="card">
+            <div class="body">
+                <h2>③ Swiper.js デモ（モバイル最適・jQuery不要）</h2>
+                <p>構造は <code>.swiper</code> → <code>.swiper-wrapper</code> →
+                    <code>.swiper-slide</code>。エフェクトやサムネ同期など拡張が豊富。</p>
+                <div class="demo">
+                    <!-- Swiper CSS & JS -->
+                    <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css" />
+                    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+
+                    <div class="swiper" style="border-radius:14px; overflow:hidden;">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="slide-visual" style="background:#ffd6a5">Swiper 1</div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="slide-visual" style="background:#caffbf">Swiper 2</div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="slide-visual" style="background:#bdb2ff">Swiper 3</div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+
+                    <script>
+                        window.addEventListener('DOMContentLoaded', function () {
+                            new Swiper('.swiper', {
+                                loop: true,
+                                speed: 600,
+                                autoplay: { delay: 2600 },
+                                spaceBetween: 16,
+                                pagination: { el: '.swiper-pagination', clickable: true },
+                                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                                breakpoints: {
+                                    0: { slidesPerView: 1 },
+                                    768: { slidesPerView: 2 },
+                                    1024: { slidesPerView: 3 }
+                                }
+                            });
+                        });
+                    </script>
+
+                    <h4>エフェクト例</h4>
+                    <pre><code>new Swiper('.swiper.fade', {
+  effect: 'fade',
+  fadeEffect: { crossFade: true }
+});
+new Swiper('.swiper.coverflow', {
+  effect: 'coverflow',
+  coverflowEffect: { rotate: 20, depth: 120, slideShadows: false }
+});</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- 比較＆ハマり所 -->
+        <section id="compare" class="card">
+            <div class="body">
+                <h2>④ 比較とハマりポイント</h2>
+                <ul>
+                    <li><strong>Slick</strong>: jQuery必須。既存資産に乗せやすい。<span class="tip">（CDNは jQuery → Slick の順）</span>
+                    </li>
+                    <li><strong>Swiper</strong>: 依存なし。タッチ＆GPUでヌルヌル。</li>
+                    <li><strong>共通</strong>: 親要素が <code>display:none</code> の状態で初期化しない（幅が計算できない）。</li>
+                    <li>画像比率バラバラ問題は CSS で <code>object-fit: cover</code> を付ける。</li>
+                    <li>アクセシビリティ: キーボード操作有効化、aria-label/roledescription の付与。</li>
+                </ul>
+                <div class="callout">
+                    <strong>GitHub Pages への置き方</strong>
+                    <ol>
+                        <li>この HTML を <code>carousel.html</code> として保存</li>
+                        <li>リポジトリの <code>docs/</code> かルートに配置</li>
+                        <li>トップや学習レポ目次からリンク（例：<code>&lt;a href="/carousel.html"&gt;</code>）</li>
+                    </ol>
+                    <p class="tip">CSSを分けたい場合は、上の &lt;style&gt; を <code>styles.css</code>
+                        に移し、&nbsp;<code>&lt;link rel="stylesheet" href="styles.css"&gt;</code> に変更。</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            © 2025 Carousel Study Notes. Built for GitHub Pages. | 最終更新:
+            <script>document.write(new Date().toLocaleDateString('ja-JP'))</script>
+        </footer>
+    </div>
+
+    <!-- 自作スライダーのJS（最小） -->
+    <script>
+            (function () {
+                const root = document.querySelector('.plain-carousel');
+                if (!root) return;
+                const track = root.querySelector('.plain-track');
+                const slides = Array.from(root.querySelectorAll('.plain-slide'));
+                let i = 0;
+                function go(dir) { i = (i + dir + slides.length) % slides.length; track.style.transform = `translateX(${-100 * i}%)`; }
+                track.style.width = `${slides.length * 100}%`;
+                slides.forEach(s => s.style.width = `${100}%`);
+                root.querySelectorAll('.plain-btn').forEach(b => b.addEventListener('click', () => go(+b.dataset.dir)));
+            })();
+    </script>
+</body>
+
+</html>

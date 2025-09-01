@@ -45,55 +45,53 @@ button {
     border-radius: 12px;
 }
 
+/* ---- キャプション：PCでは重ねる（帯は文字幅） ---- */
 .item .caption {
     position: absolute;
     bottom: 20px;
     /* 下からの距離 */
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    /* 半透明の黒背景 */
+    background: rgba(0, 0, 0, 0.55);
     color: #fff;
     padding: 8px 16px;
     border-radius: 8px;
-    font-size: 1.2rem;
+    font-size: clamp(14px, 1.6vw, 18px);
+    line-height: 1.8;
     text-align: center;
+    display: inline-block;
+    /* 背景を文字幅にフィットさせる */
     max-width: 90%;
+    white-space: normal;
+    /* 長文も折り返す */
 }
 
-.item__blue {
-    background: rgb(68 174 255);
+/* ---- スマホでは画像の下に出す ---- */
+@media (width <=768px) {
+    .item .caption {
+        position: static;
+        transform: none;
+        margin: 10px auto 0;
+        display: block;
+        max-width: 95%;
+        padding: 12px 16px;
+        font-size: clamp(16px, 4.5vw, 20px);
+        line-height: 1.9;
+        text-align: center;
+        background: rgba(255, 245, 200, 0.75);
+        backdrop-filter: blur(6px);
+        /* ← これでぼかしガラス風 */
+        -webkit-backdrop-filter: blur(6px);
+        /* Safari対応 */
+        color: #000;
+        border-radius: 10px;
+    }
 }
 
-.item__red {
-    background: rgb(248 82 1);
-}
-
-.item__yellow {
-    background: rgb(255 213 27);
-    color: #585858;
-}
-
-.item__purple {
-    background: rgb(227, 72, 255);
-}
-
-.swiper-container {
-    position: relative;
-    overflow: hidden;
-}
-
-.swiper-container.visible {
-    overflow: visible;
-}
-
-.sample-swiper-cards {
-    padding: 0 50px;
-}
-
+/* 暗い背景でも矢印が見えるように */
 .slick-prev:before,
 .slick-next:before {
-    color: white;
+    color: #fff;
     font-size: 30px;
 }
 
@@ -106,6 +104,13 @@ button {
     z-index: 1;
 }
 
-.slick-dots {
-    bottom: 10px;
-}
+/* スマホの矢印サイズ微調整（任意） */
+@media (width <=480px) {
+
+    .slick-prev,
+    .slick-next {
+        width: 34px;
+        height: 34px;
+    }
+
+    .slic

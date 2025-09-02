@@ -2,83 +2,150 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Slick.jsのサンプル</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-    <link rel="stylesheet" href="../assets/css/carousel.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <link rel="stylesheet" href="../assets/css/carousel.css" />
 </head>
 
 <body>
     <div class="wrapper">
         <h1>Slick.jsのサンプル</h1>
+
+        <!-- くま・ねこ・ひよこ：そのまま -->
         <h2>「くまさんとねこさんとひよこさん」</h2>
         <div class="sample-slick">
             <div class="slick carousel">
-                <!-- 1枚目 -->
                 <div class="item">
-                    <img src="../assets/images/bear_story1.png" alt="お散歩のシーン">
+                    <img src="../assets/images/bear_story1.png" alt="お散歩のシーン" />
                     <p class="caption">くまさんとねこさんとひよこさん　なかよくさんぽ</p>
                 </div>
-
-                <!-- 2枚目 -->
                 <div class="item">
-                    <img src="../assets/images/bear_story2.png" alt="ピクニックのシーン">
+                    <img src="../assets/images/bear_story2.png" alt="ピクニックのシーン" />
                     <p class="caption">みんなでひなたで　おいしいごはん　しあわせなひととき</p>
                 </div>
-
-                <!-- 3枚目 -->
                 <div class="item">
-                    <img src="../assets/images/bear_story3.png" alt="夕焼けのシーン">
+                    <img src="../assets/images/bear_story3.png" alt="夕焼けのシーン" />
                     <p class="caption">ゆうやけにそまって　あしたもなかよし</p>
                 </div>
             </div>
         </div>
 
+        <!-- よるの まどわし：縦書き（PC）/ 横書き（SP）で1文字アニメ -->
         <h2>「よるの　まどわし」</h2>
         <div class="sample-slick-fade">
             <div class="slick carousel">
-                <!-- 1枚目 -->
                 <div class="item">
-                    <img src="../assets/images/night_story1.png" alt="ベッドで目を覚ます少年">
-                    <p class="caption">夜、ぼくは　ふしぎな音で　めをさました。</p>
+                    <img src="../assets/images/night_story1.png" alt="ベッドで目を覚ます少年" />
+                    <p class="caption caption-v">夜、ぼくは　ふしぎな音でめをさました</p>
                 </div>
-
-                <!-- 2枚目 -->
                 <div class="item">
-                    <img src="../assets/images/night_story2.png" alt="部屋をのぞく少年">
-                    <p class="caption">そっと　ドアをひらくと、<br>
-                        くらやみのなかから　なにかが　よんでいる。</p>
+                    <img src="../assets/images/night_story2.png" alt="部屋をのぞく少年" />
+                    <p class="caption caption-v">そっと ドアをひらくと、くらやみのなかから なにかが よんでいる</p>
                 </div>
-
-                <!-- 3枚目 -->
                 <div class="item">
-                    <img src="../assets/images/night_story3.png" alt="赤い目の自分と向き合う少年">
-                    <p class="caption">そこに　いたのは――<br>
-                        ぼくと　おなじ顔の、知らない“ぼく”。</p>
+                    <img src="../assets/images/night_story3.png" alt="赤い目の自分と向き合う少年" />
+                    <p class="caption caption-v">そこに いたのは ぼくと おなじ顔の、知らない“ぼく”。</p>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(() => {
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script>
+        $(function () {
+            // くま・ねこ・ひよこ
             $(".sample-slick .slick").slick({
-                infinite: true, // ループの有効化
-                autoplay: true, // 自動再生ON
-                autoplaySpeed: 4000, // 4秒ごとに切り替え
+                infinite: true,
+                autoplay: true,
+                autoplaySpeed: 4000,
             });
-        });
-        $(document).ready(() => {
-            $(".sample-slick-fade .slick").slick({
-                infinite: true, // ループの有効化
-                fade: true, // フェードアニメーションを有効化
-                autoplay: true, // 自動再生ON
-                autoplaySpeed: 5000, // 5秒ごとに切り替え
+
+            // よるの まどわし
+            const $night = $(".sample-slick-fade .slick");
+
+            // 文字を1文字ずつspanに分解（<br>は行区切り用に\nへ）
+            function prepareCaption($el) {
+                if ($el.data("prepared")) return;
+                const srcHTML = $el.html();
+                const textWithBreak = srcHTML.replace(/<br\s*\/?>/gi, "\n");
+                $el.attr("data-src", textWithBreak);
+                $el.empty();
+
+                const lines = textWithBreak.split("\n");
+                let index = 0;
+                lines.forEach((line, li) => {
+                    Array.from(line).forEach((ch) => {
+                        const span = document.createElement("span");
+                        span.textContent = ch;
+                        span.style.animationDelay = (index * 0.1) + "s";
+                        $el.append(span);
+                        index++;
+                    });
+                    if (li < lines.length - 1) {
+                        const gap = document.createElement("span");
+                        gap.className = "line-gap";
+                        $el.append(gap);
+                        index += 2;
+                    }
+                });
+                $el.data("prepared", true);
+            }
+
+            // アニメ再生のため毎回作り直し
+            function replayCaption($el) {
+                const original = $el.attr("data-src");
+                if (!original) return;
+                $el.removeData("prepared").empty();
+
+                const lines = original.split("\n");
+                let index = 0;
+                lines.forEach((line, li) => {
+                    Array.from(line).forEach((ch) => {
+                        const span = document.createElement("span");
+                        span.textContent = ch;
+                        span.style.animationDelay = (index * 0.1) + "s";
+                        $el.append(span);
+                        index++;
+                    });
+                    if (li < lines.length - 1) {
+                        const gap = document.createElement("span");
+                        gap.className = "line-gap";
+                        $el.append(gap);
+                        index += 2;
+                    }
+                });
+                $el.data("prepared", true);
+            }
+
+            // 初期準備：夜のキャプションを分解
+            $(".sample-slick-fade .caption-v").each(function () {
+                prepareCaption($(this));
+            });
+
+            // slick 初期化イベント：初回スライドのアニメを確実に走らせる
+            $night.on("init", function (e, slick) {
+                const $cur = $(slick.$slides.get(slick.currentSlide)).find(".caption-v");
+                if ($cur.length) replayCaption($cur);
+            });
+
+            // 切り替えのたびに次スライドのアニメ再生
+            $night.on("beforeChange", function (e, slick, current, next) {
+                const $next = $(slick.$slides.get(next)).find(".caption-v");
+                if ($next.length) replayCaption($next);
+            });
+
+            // slick を最後に初期化
+            $night.slick({
+                infinite: true,
+                fade: true,
+                autoplay: true,
+                autoplaySpeed: 5000,
             });
         });
     </script>

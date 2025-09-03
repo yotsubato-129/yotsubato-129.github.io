@@ -59,96 +59,99 @@
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script>
         $(function () {
-            // くま・ねこ・ひよこ
-            $(".sample-slick .slick").slick({
-                infinite: true,
-                autoplay: true,
-                autoplaySpeed: 4000,
-            });
+            // くま側
+            $(".sample-slick .slick").slick({ infinite: true, autoplay: true, autoplaySpeed: 4000 });
 
-            // よるの まどわし
             const $night = $(".sample-slick-fade .slick");
 
-            // 文字を1文字ずつspanに分解（<br>は行区切り用に\nへ）
-            function prepareCaption($el) {
-                if ($el.data("prepared")) return;
-                const srcHTML = $el.html();
-                const textWithBreak = srcHTML.replace(/<br\s*\/?>/gi, "\n");
-                $el.attr("data-src", textWithBreak);
-                $el.empty();
+            // 右→左の2列に分配しつつ、1文字ずつ遅延アニメ
+            function buildTwoCols($cap) {
+                // 元テキスト（<br>は改行に）
+                const src = ($cap.attr("data-src") || $cap.html().replace(/<br\s*\/?>/gi, "\n"));
+                $cap.attr("data-src", src);
 
-                const lines = textWithBreak.split("\n");
-                let index = 0;
+                // 器を作り直し（右列→左列の順で追加する）
+                $cap.empty();
+                const colRight = $('<div class="vcol"></div>').appendTo($cap);
+                const colLeft = $('<div class="vcol"></div>').appendTo($cap);
+
+                const maxH = $cap.innerHeight();  // 1列に入れられる高さ
+                let index = 0;                     // アニメ遅延 0.1s刻み
+                let toLeft = false;                // false:右列 / true:左列
+
+                const lines = src.split("\n");
                 lines.forEach((line, li) => {
-                    Array.from(line).forEach((ch) => {
-                        const span = document.createElement("span");
-                        span.textContent = ch;
-                        span.style.animationDelay = (index * 0.1) + "s";
-                        $el.append(span);
+                    for (const ch of Array.from(line)) {
+                        const span = $('<span/>').text(ch)
+                            .css('animationDelay', (index * 0.1) + 's');
+
+                        const col = toLeft ? colLeft : colRight;
+                        col.append(span);
+
+                        // 溢れたら左列へ切り替え（今追加した分を左へ移す）
+                        if (col[0].scrollHeight > maxH) {
+                            span.detach();
+                            toLeft = true;
+                            colLeft.append(span);
+                        }
                         index++;
-                    });
+                    }
+                    // 行の区切り
                     if (li < lines.length - 1) {
-                        const gap = document.createElement("span");
-                        gap.className = "line-gap";
-                        $el.append(gap);
-                        index += 2;
+                        const gap = $('<span class="line-gap"></span>');
+                        const col = toLeft ? colLeft : colRight;
+                        col.append(gap);
+                        if (col[0].scrollHeight > maxH) {
+                            gap.detach();
+                            toLeft = true;
+                            colLeft.append(gap);
+                        }
+                        index += 2; // 行間ぶん少し遅延
                     }
                 });
-                $el.data("prepared", true);
             }
 
-            // アニメ再生のため毎回作り直し
-            function replayCaption($el) {
-                const original = $el.attr("data-src");
-                if (!original) return;
-                $el.removeData("prepared").empty();
-
-                const lines = original.split("\n");
-                let index = 0;
-                lines.forEach((line, li) => {
-                    Array.from(line).forEach((ch) => {
-                        const span = document.createElement("span");
-                        span.textContent = ch;
-                        span.style.animationDelay = (index * 0.1) + "s";
-                        $el.append(span);
-                        index++;
-                    });
-                    if (li < lines.length - 1) {
-                        const gap = document.createElement("span");
-                        gap.className = "line-gap";
-                        $el.append(gap);
-                        index += 2;
-                    }
-                });
-                $el.data("prepared", true);
-            }
+            // 毎回最初からアニメさせる
+            function replay($cap) { buildTwoCols($cap); }
 
             // 初期準備：夜のキャプションを分解
-            $(".sample-slick-fade .caption-v").each(function () {
-                prepareCaption($(this));
-            });
+            $(".sample-slick-fade .caption-v").each(function () { buildTwoCols($(this)); });
 
-            // slick 初期化イベント：初回スライドのアニメを確実に走らせる
+            // slickのイベントで毎回再構築
             $night.on("init", function (e, slick) {
                 const $cur = $(slick.$slides.get(slick.currentSlide)).find(".caption-v");
-                if ($cur.length) replayCaption($cur);
+                if ($cur.length) replay($cur);
             });
-
-            // 切り替えのたびに次スライドのアニメ再生
             $night.on("beforeChange", function (e, slick, current, next) {
                 const $next = $(slick.$slides.get(next)).find(".caption-v");
-                if ($next.length) replayCaption($next);
+                if ($next.length) replay($next);
             });
 
-            // slick を最後に初期化
+            // 自動再生が止まらないように
             $night.slick({
                 infinite: true,
                 fade: true,
                 autoplay: true,
                 autoplaySpeed: 5000,
+                speed: 700,
+                cssEase: 'ease',
+                pauseOnHover: false,
+                pauseOnFocus: false,
+                pauseOnDotsHover: false
+            });
+
+            // 画面サイズ変更時は再レイアウト
+            let timer = null;
+            $(window).on('resize', function () {
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    const $cur = $night.find('.slick-slide.slick-current .caption-v');
+                    if ($cur.length) replay($cur);
+                }, 120);
             });
         });
     </script>
+
 </body>
 
 </html>

@@ -1,4 +1,6 @@
-/* ==== 基本 ==== */
+/* =========================
+   基本レイアウト
+========================= */
 * {
     box-sizing: border-box;
 }
@@ -41,7 +43,11 @@ button {
     border-radius: 12px;
 }
 
-/* ==== 共通キャプション（くま等）：PCは画像上・スマホは下 ==== */
+/* =========================
+   共通キャプション（くま等）
+   PC: 画像の上に重ねる
+   SP: 画像の下に出す
+========================= */
 .item .caption {
     position: absolute;
     left: 50%;
@@ -78,7 +84,9 @@ button {
     }
 }
 
-/* ==== Slick 矢印・ドット ==== */
+/* =========================
+   Slick 矢印/ドット
+========================= */
 .slick-prev:before,
 .slick-next:before {
     color: #fff;
@@ -107,45 +115,69 @@ button {
     }
 }
 
-/* ==== 「よるの まどわし」PC：右側に縦書きで1文字ずつ落下 ==== */
-.sample-slick-fade .item .caption.caption-v {
-    /* 共通.captionを打ち消し＆右寄せ */
-    position: absolute !important;
-    top: 10px;
-    bottom: 10px;
-    right: 60px;
-    left: auto !important;
-    transform: none !important;
-    z-index: 5;
+/* =========================================================
+   「よるの まどわし」：PCは右側に縦2列で1文字落下
+========================================================= */
+@media (min-width: 769px) {
+    .sample-slick-fade .item .caption.caption-v {
+        position: absolute !important;
+        top: 10px;
+        bottom: 10px;
+        right: 50px;
+        left: auto !important;
+        transform: none !important;
+        z-index: 5;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
+        /* 列を横並び（右→左の順に見せたいので row-reverse） */
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        /* 縦方向の見た目バランス */
+        justify-content: center;
+        /* 横方向も中央に寄せる */
+        gap: 1.2em;
 
-    /* 縦書きの見た目（※実際の縦組は JS で縦並び） */
-    font-size: 17px;
-    line-height: 1.5;
-    background: rgba(0, 0, 0, 0.35);
-    color: #fff;
-    padding: 10px 12px;
-    border-radius: 8px;
-    max-width: 22ch;
-    overflow: visible;
+        background: rgba(0, 0, 0, 0.35);
+        color: #fff;
+        border-radius: 8px;
+        padding: 10px 12px;
+
+        max-width: 42%;
+        /* 帯の最大幅 */
+        /* 高さは top/bottom で管理。overflowでにじみ防止 */
+        overflow: hidden;
+
+        font-size: 17px;
+        line-height: 1.5;
+    }
+
+    /* 列（縦積み） */
+    .sample-slick-fade .caption-v .vcol {
+        display: flex;
+        flex-direction: column;
+        /* 1文字ずつ縦積み */
+        align-items: center;
+        justify-content: flex-start;
+        gap: 2px;
+        height: 100%;
+    }
+
+    /* 1文字ごとの落下アニメ（PC） */
+    .sample-slick-fade .caption-v span {
+        display: block;
+        /* ← 縦積み（PCで重要） */
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: dropIn .35s ease-out forwards;
+    }
+
+    /* 改行相当のスペーサ */
+    .sample-slick-fade .caption-v .line-gap {
+        height: 6px;
+    }
 }
 
-/* 1文字の落下アニメ（PC） */
-.sample-slick-fade .caption-v span {
-    display: block;
-    opacity: 0;
-    transform: translateY(-20px);
-    animation: dropIn .35s ease-out forwards;
-}
-
-.sample-slick-fade .caption-v .line-gap {
-    height: 5px;
-}
-
+/* 落下アニメ（PC用） */
 @keyframes dropIn {
     to {
         opacity: 1;
@@ -153,15 +185,19 @@ button {
     }
 }
 
-/* ==== 「よるの まどわし」SP：画像の下に横書きで1文字フェードアップ ==== */
+/* =========================================================
+   「よるの まどわし」：スマホは画像の下で横書き1文字アニメ
+========================================================= */
 @media (max-width: 768px) {
     .sample-slick-fade .item .caption.caption-v {
         position: static !important;
         transform: none !important;
         display: block !important;
-        /* 横書きに強制（縦指定を完全解除） */
-        writing-mode: initial !important;
+
+        /* 縦レイアウト系を完全解除 */
+        writing-mode: horizontal-tb !important;
         text-orientation: initial !important;
+        flex-direction: unset !important;
 
         margin: 10px auto 0;
         max-width: 95%;
@@ -174,28 +210,29 @@ button {
         text-align: left;
     }
 
+    /* 横書きで1文字ずつフェードアップ（JSのanimationDelayが効く） */
     .sample-slick-fade .caption-v span {
         display: inline-block !important;
-        /* 横並び */
+        /* PCの block を打ち消す */
         opacity: 0;
         transform: translateY(8px);
         animation: fadeInUp .35s ease-out forwards;
-        /* JSのdelayが効く */
         line-height: 1.7;
         letter-spacing: 0.02em;
     }
 
+    /* 改行相当は横のスペースへ */
     .sample-slick-fade .caption-v .line-gap {
         display: inline-block !important;
         width: .6em;
         height: 0;
-        /* 横書きの改行は小さめスペース */
     }
+}
 
-    @keyframes fadeInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+/* フェードアップ（SP用） */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
